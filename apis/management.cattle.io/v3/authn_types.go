@@ -161,6 +161,27 @@ type GithubConfigApplyInput struct {
 	Enabled      bool         `json:"enabled,omitempty"`
 }
 
+type ZoomlionConfig struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+	AuthConfig        `json:",inline" mapstructure:",squash"`
+
+	Hostname     string `json:"hostname,omitempty" norman:"notnullable" norman:"required"`
+	TLS          bool   `json:"tls,omitempty" norman:"notnullable,default=true" norman:"required"`
+	ClientID     string `json:"clientId,omitempty" norman:"required"`
+	ClientSecret string `json:"clientSecret,omitempty" norman:"required,type=password"`
+}
+
+type ZoomlionConfigTestOutput struct {
+	RedirectURL string `json:"redirectUrl"`
+}
+
+type ZoomlionConfigApplyInput struct {
+	ZoomlionConfig ZoomlionConfig `json:"zoomlionConfig,omitempty"`
+	Code         string       `json:"code,omitempty"`
+	Enabled      bool         `json:"enabled,omitempty"`
+}
+
 type AzureADConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
