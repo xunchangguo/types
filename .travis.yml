@@ -1,0 +1,32 @@
+language: go
+sudo: false
+notifications:
+  email: false
+jobs:
+  include:
+    - go: 1.10.1
+      stage: deploy
+      go_import_path: github.com/xunchangguo/types
+      services:
+        - docker
+      install: skip
+      script: skip
+      before_deploy:
+#        - go get -u github.com/golang/dep/cmd/dep
+#        - dep ensure
+        - go generate
+        - chmod +x ./hack/save.bash
+        - ./hack/save.bash
+      deploy:
+        - provider: releases
+          api_key:
+            secure: "PkmaStV4OxbhIqjyiUOF6PoaXa1SXci/hkE1OfUIah5N7T8tad7Vp8B9jwi7neowBTwT5YK4AOfZyFPFjMbKRpnQcojylHBJ/UujO8XQLEbDokwY0HFFkySOP7CAF4julIEDDNozVNTzVySIdpJ8nxSCMjZs4RSwqGWTZxjOcvoOTuiSUk0X+zJyltqrmnLqaDaZG024usvoU7Y0d7Q5ausLxDWNsrKPMQxDvEtie6p3oTw20HVZqa2b/AATSIi+rBID9tZUow5zaJKlzDGCJesvNcbErfYXghJPLwoGSdYgMRujX914LJ1LvEw36SDKftOv/PsRq9uDbye05c/qslLrd8mF9/NoeYvvWVTffuW4e9q8meGFxOYqg1zE/eNoJd64DW6Fx/BkHQuKiuPU2/MhOhlWRzK92fwaLq/co6LxSFz6JokgFMpN5JUL8DHP6/3vH+4fHgC57/iVaqETL6Y+NliXwJIPT7Jp/KC49ov1elwTlJdw0Y4Mukd8S2wr7Z0aGXVu19jsqtYacpX+epx6el3+VkQa4TKJh4iJbX2g3nZo4OxzXQJ+mdAF440AEoyC+2RUQXL2C7OqvMiFhkrHwnnFQjsafleLdSwsWEjk8P0zCUUObHsXuiT2v8N7FHidNyGbL+vl2BgpwFHIvTN8wx2W3FBslEFk5gTzIio="
+          file_glob: true
+          file: release/*
+          skip_cleanup: true
+          on:
+            repo: xunchangguo/types
+            branch: master
+            tags: true
+addons:
+  ssh_known_hosts: github.com
