@@ -6,7 +6,7 @@ jobs:
   include:
     - go: 1.11.2
       stage: deploy
-      go_import_path: github.com/xunchangguo/types
+      go_import_path: github.com/rancher/types
       services:
         - docker
       install: skip
